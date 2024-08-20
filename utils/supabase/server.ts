@@ -1,10 +1,12 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { Database } from '@/utils/supabase/supabase'
+import { createClient } from "@supabase/supabase-js"
 
-export const createClient = () => {
+export const createSupabaseClient = () => {
   const cookieStore = cookies();
 
-  return createServerClient(
+  return createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
@@ -27,3 +29,13 @@ export const createClient = () => {
     },
   );
 };
+
+
+export  async function isUserTokenValid(userToken: string){
+  const { error } = await createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_SERVICE_KEY!).auth.getUser(userToken)
+  if(error == null){
+    return true
+  } else {
+    return false
+  }
+}

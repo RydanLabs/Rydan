@@ -7,7 +7,6 @@ export default function Step({
 }) {
   return (
     <li className="mx-4">
-      <input type="checkbox" id={title} className={`mr-2 peer`} />
       <label
         htmlFor={title}
         className={`text-lg text-foreground/90 peer-checked:line-through font-semibold hover:cursor-pointer`}

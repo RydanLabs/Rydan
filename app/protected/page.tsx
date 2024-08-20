@@ -1,12 +1,12 @@
 import DeployButton from "@/components/DeployButton";
 import AuthButton from "@/components/AuthButton";
-import { createClient } from "@/utils/supabase/server";
-import FetchDataSteps from "@/components/tutorial/FetchDataSteps";
+import { createSupabaseClient } from "@/utils/supabase/server";
+import FetchDataSteps from "@/components/schedule/FetchScheduleList";
 import Header from "@/components/Header";
 import { redirect } from "next/navigation";
 
 export default async function ProtectedPage() {
-  const supabase = createClient();
+  const supabase = createSupabaseClient();
 
   const {
     data: { user },

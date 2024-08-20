@@ -1,52 +1,66 @@
-import DeployButton from "../components/DeployButton";
-import AuthButton from "../components/AuthButton";
-import { createClient } from "@/utils/supabase/server";
-import ConnectSupabaseSteps from "@/components/tutorial/ConnectSupabaseSteps";
-import SignUpUserSteps from "@/components/tutorial/SignUpUserSteps";
 import Header from "@/components/Header";
+import Topbar from "@/components/topbar/Topbar";
+import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
+import LiveHelpIcon from '@mui/icons-material/LiveHelp';
+import Link from "next/link";
+import { Button } from "@mui/material";
 
 export default async function Index() {
-  const canInitSupabaseClient = () => {
-    // This function is just for the interactive tutorial.
-    // Feel free to remove it once you have Supabase connected.
-    try {
-      createClient();
-      return true;
-    } catch (e) {
-      return false;
-    }
-  };
-
-  const isSupabaseConnected = canInitSupabaseClient();
 
   return (
-    <div className="flex-1 w-full flex flex-col gap-20 items-center">
-      <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-        <div className="w-full max-w-4xl flex justify-between items-center p-3 text-sm">
-          <DeployButton />
-          {isSupabaseConnected && <AuthButton />}
-        </div>
-      </nav>
+    <div className="w-full flex flex-col gap-20">
+      <Topbar></Topbar>
 
-      <div className="flex-1 flex flex-col gap-20 max-w-4xl px-3">
-        <Header />
-        <main className="flex-1 flex flex-col gap-6">
-          <h2 className="font-bold text-4xl mb-4">Next steps</h2>
-          {isSupabaseConnected ? <SignUpUserSteps /> : <ConnectSupabaseSteps />}
-        </main>
+      <div>
+        <h4 className="text-4xl font-extrabold leading-none tracking-tight text-center text-gray-900 dark:text-white">Empowering Care</h4>
+        <p className="text-center mt-8 font-light text-gray-500 sm:text-xl dark:text-gray-400">Seamless Reminders for Patient Well-being</p>
       </div>
 
-      <footer className="w-full border-t border-t-foreground/10 p-8 flex justify-center text-center text-xs">
+        
+  <div className="flex justify-center items-center mt-10">
+    <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
+      <div className="relative">
+        <dt>
+          <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+            <LocalPhoneIcon />
+                </div>
+                <p className="ml-16 text-lg leading-6 font-medium text-gray-900">Automation Made Easy</p>
+            </dt>
+            <dd className="mt-2 ml-16 text-base text-gray-500">
+              Rydan reminds your patients automatically at an assigned time
+            </dd>
+        </div>
+
+        <div className="relative">
+            <dt>
+                <div
+                    className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                    <LiveHelpIcon />
+                </div>
+                <p className="ml-16 text-lg leading-6 font-medium text-gray-900">Welfare Checks</p>
+            </dt>
+            <dd className="mt-2 ml-16 text-base text-gray-500">
+              A phone call each day to check that your patients are OK
+            </dd>
+        </div>
+    </dl>
+    </div>
+    <div className="mt-10 mb-10 sm:mt-8 sm:flex justify-center">
+      <div className="rounded-md shadow">
+        <Link className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 md:py-4 md:text-lg md:px-10"
+              href="/login">Get started for free</Link>
+        </div>
+        <div className="mt-3 sm:mt-0 sm:ml-3">
+        <a href="https://calendly.com/rydanlabs/30min"
+            className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 md:py-4 md:text-lg md:px-10">
+            Book a demo
+        </a>
+    </div>
+    </div>
+
+      <footer className="w-full border-t border-t-foreground/10 p-8 flex justify-center text-xs">
         <p>
-          Powered by{" "}
-          <a
-            href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-            target="_blank"
-            className="font-bold hover:underline"
-            rel="noreferrer"
-          >
-            Supabase
-          </a>
+         © 2024 Rydan
         </p>
       </footer>
     </div>

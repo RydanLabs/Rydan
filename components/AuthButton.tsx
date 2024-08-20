@@ -1,37 +1,41 @@
-import { createClient } from "@/utils/supabase/server";
+"use client"
+
+import { createClient } from "@/utils/supabase/client";
+import { Button } from "@mui/material";
+import { User } from "@supabase/supabase-js";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { useEffect, useState } from "react";
 
-export default async function AuthButton() {
+export default function AuthButton() {
   const supabase = createClient();
+  const [user, setUser] = useState<User | null>(null);
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  useEffect(() => {
+    supabase.auth.getUser().then((userResponse) => {
+      const userData = userResponse.data
+      if(userData){
+        setUser(userData.user)
+      }
+    })
+  }, [supabase])
 
-  const signOut = async () => {
-    "use server";
-
-    const supabase = createClient();
-    await supabase.auth.signOut();
-    return redirect("/login");
-  };
-
-  return user ? (
-    <div className="flex items-center gap-4">
-      Hey, {user.email}!
-      <form action={signOut}>
-        <button className="py-2 px-4 rounded-md no-underline bg-btn-background hover:bg-btn-background-hover">
-          Logout
-        </button>
-      </form>
+  return (
+    <div>
+      {user ? (
+        <Button variant="contained" className="bg-primary text-white hover:bg-primary-dark" sx={{
+          backgroundColor: 'primary.main',
+          color: 'white',
+        }}>
+          <Link href="/dashboard">Dashboard</Link>
+        </Button>
+      ) : (
+        <Button variant="contained" className="bg-primary text-white hover:bg-primary-dark" sx={{
+          backgroundColor: 'primary.main',
+          color: 'white',
+        }}>
+          <Link href="/login">Login</Link>
+        </Button>
+      )}
     </div>
-  ) : (
-    <Link
-      href="/login"
-      className="py-2 px-3 flex rounded-md no-underline bg-btn-background hover:bg-btn-background-hover"
-    >
-      Login
-    </Link>
   );
 }
