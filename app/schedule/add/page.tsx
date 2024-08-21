@@ -22,7 +22,7 @@ export default function Schedule() {
     const [phoneNumberError, setPhoneNumberError] = useState('')
     const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
     
-    function onRadioButtonChange(event: { target: { value: React.SetStateAction<string>; }; }){
+    function onRadioButtonChange(event: React.ChangeEvent<HTMLFieldSetElement>){
       setCommType(event.target.value)
     }
 
