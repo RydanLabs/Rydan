@@ -30,7 +30,7 @@ interface Props {
 export default function ResponsiveDrawer({ children }: Props) {
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [isClosing, setIsClosing] = React.useState(false);
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const supabase = createClient()
     const router = useRouter()
     const pathname = usePathname()
@@ -50,7 +50,7 @@ export default function ResponsiveDrawer({ children }: Props) {
       }
     };
 
-    const handleMenu = (event: { currentTarget: React.SetStateAction<null>; }) => {
+    const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
 
