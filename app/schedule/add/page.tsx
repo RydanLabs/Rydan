@@ -6,6 +6,7 @@ import { useFormState } from 'react-dom'
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
 import { parsePhoneNumber } from 'react-phone-number-input'
+import type { E164Number } from 'libphonenumber-js'
 
 const initialState = {
   message: "",
@@ -27,7 +28,7 @@ export default function Schedule() {
       setCommType(target.value)
     }
 
-    function onPhoneNumberChange(value: string){
+    function onPhoneNumberChange(value?: E164Number | undefined){
       setPhoneNumberError("")
       if(value){
         const phoneNumber = parsePhoneNumber(value)
