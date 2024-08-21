@@ -67,10 +67,13 @@ export default function Login() {
             </div>
 
             <div className="text-sm">
-              <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                Forgot password?
-              </a>
+              <p className="font-semibold text-indigo-600 hover:text-indigo-500">
+                <a href='/reset-password'>
+                  Forgot password?
+                </a>  
+              </p>
             </div>
+
             <p aria-live="polite" role="status" className="text-red-600">
               {state.message}
             </p>
