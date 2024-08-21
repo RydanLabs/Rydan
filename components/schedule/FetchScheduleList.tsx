@@ -29,7 +29,7 @@ export default function FetchScheduleList() {
 
             // Initialize switchStates based on is_enabled
             const initialStates = scheduledMessage.reduce((acc, message, index) => {
-              acc[index] = message.is_enabled;
+              acc[index] = message.is_enabled ?? false;
               return acc;
             }, {} as Record<number, boolean>);
             setSwitchStates(initialStates);
