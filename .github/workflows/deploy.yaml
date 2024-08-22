@@ -15,6 +15,7 @@ jobs:
         with:
           node-version: 16
       - run: npm install 
+      - run: npm install --global vercel@latest
       - run: npm vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
       - run: npm vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
       - run: npm vercel deploy --prod --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
