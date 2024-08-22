@@ -151,6 +151,10 @@ export default function ResponsiveDrawer({ children }: Props) {
                     <MenuItem onClick={handleLogout} component={Link} href="/login">
                         Logout
                     </MenuItem>
+
+                    <MenuItem onClick={handleLogout} component={Link} href="/account/update-password">
+                        Update Password
+                    </MenuItem>
                 </Menu>
             </div>
 
