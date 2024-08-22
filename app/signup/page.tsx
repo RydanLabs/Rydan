@@ -2,8 +2,10 @@
 
 
 import { signup } from './actions'
-import React from 'react';
+import React, { useState } from 'react';
 import { useFormState } from 'react-dom'
+import { Turnstile } from '@marsidev/react-turnstile'
+
 
 const initialState = {
     message: "",
@@ -13,19 +15,15 @@ const initialState = {
 export default function SignUp() {
 
     const [state, formAction] = useFormState(signup, initialState);
-  
+    const [captchaToken, setCaptchaToken] = useState('')
+
+
     return (
       <div className="bg-white flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
             <div className="max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
                 <h1 className="mb-8 text-3xl text-center">Sign up</h1>
                 
                 <form action={formAction} className="space-y-6">
-
-                <input 
-                    type="text"
-                    className="block border border-grey-light w-full p-3 rounded mb-4"
-                    name="organisationName"
-                    placeholder="Organisation Name" />
 
                 <input 
                     type="text"
@@ -49,6 +47,17 @@ export default function SignUp() {
                     className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                     Sign up
                 </button>
+
+                <input id="captchaToken" name="captchaToken" value={captchaToken} style={{display: "none"}}>
+                </input>
+
+                <Turnstile 
+                    siteKey={'0x4AAAAAAAh3NU4btL7QaYJ6'}
+                    onSuccess={(token) => {
+                       setCaptchaToken(token)
+                  }}
+                />
+
 
                 <p aria-live="polite" role="status" className="text-red-600">
                     {state?.message}
