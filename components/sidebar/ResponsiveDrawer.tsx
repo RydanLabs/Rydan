@@ -64,6 +64,10 @@ export default function ResponsiveDrawer({ children }: Props) {
         })
     };
 
+    const handleUpdatePassword = () => {
+      router.push("/account/update-password")
+    }
+
   
     React.useEffect(() => {
         supabase.auth.getUser().then(user => {
@@ -152,7 +156,7 @@ export default function ResponsiveDrawer({ children }: Props) {
                         Logout
                     </MenuItem>
 
-                    <MenuItem onClick={handleLogout} component={Link} href="/account/update-password">
+                    <MenuItem onClick={handleUpdatePassword} component={Link} href="/account/update-password">
                         Update Password
                     </MenuItem>
                 </Menu>
