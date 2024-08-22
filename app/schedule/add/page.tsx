@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { scheduleMessage } from './actions'
 import { useFormState } from 'react-dom'
 import 'react-phone-number-input/style.css'
@@ -21,8 +21,15 @@ export default function Schedule() {
     const [telInput, setTelInput] = useState('')
     const [state, formAction] = useFormState(scheduleMessage, initialState);
     const [phoneNumberError, setPhoneNumberError] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
     const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
     
+    useEffect(() => {
+      if (state?.message) {
+        setIsLoading(false);
+      }
+    }, [state?.message]);    
+
     function onRadioButtonChange(event: React.ChangeEvent<HTMLFieldSetElement>){
       const target = event.target as unknown as HTMLInputElement;
       setCommType(target.value)
@@ -123,10 +130,19 @@ export default function Schedule() {
                     {state?.message}
                 </p>
               <div>
-                <button
-                  type="submit"
-                  className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                  Submit
+                <button type="submit"
+                        onClick={() => setIsLoading(true)}
+                        className={`flex items-center justify-center w-full rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm 
+                        hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 
+                        ${isLoading && 'cursor-not-allowed'}`}>
+                          {isLoading ? (
+                          <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                            </svg>
+                            ) : (
+                              'Submit'
+                        )}
                 </button>
               </div>
 
