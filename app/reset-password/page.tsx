@@ -10,11 +10,10 @@ export default function ResetPassword(){
 
 
     async function ResetPassword(){
-        await supabase.auth.resetPasswordForEmail(email, {
-            redirectTo: 'http://example.com/account/update-password',
-          })
-          
-          
+      const redirectUrl = process.env.NEXT_PUBLIC_REDIRECT_URL ?? 'http://localhost:8080';
+      await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${redirectUrl}/account/update-password`,
+      })          
     }
 
     return (
