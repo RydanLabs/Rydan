@@ -55,6 +55,21 @@ export default function FetchScheduleList() {
     setMenuIndex(null);
   };
 
+  // https://stackoverflow.com/a/13899011
+  // TODO: Add type checking here
+  function tConvert (time: any) {
+    // Check correct time format and split into components
+    time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+  
+    if (time.length > 1) { // If time format correct
+      time = time.slice (1);  // Remove full string match value
+      time[5] = +time[0] < 12 ? 'AM' : 'PM'; // Set AM/PM
+      time[0] = +time[0] % 12 || 12; // Adjust hours
+    }
+    return time.join (''); // return adjusted time or original string
+  }
+  
+      
 
   const handleSwitchChange = (scheduleIndex: string, listIndex: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
     const isEnabled = event.target.checked
@@ -89,8 +104,11 @@ export default function FetchScheduleList() {
                 </Link>
                
               </Menu>
+              <Typography color="text.secondary">
+                {message.schedule_frequency} @ {tConvert(message.scheduled_time)}
+              </Typography>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 1 }}>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2" color="text.secondary" className='font-bold'>
                   {message.message_to_send}
                 </Typography>
                 <Switch
