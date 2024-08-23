@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { Box, Switch, IconButton, MenuItem, Menu } from '@mui/material';
-import { handleScheduleChange } from './actions';
+import { handleScheduleChange, handleScheduleDelete } from './actions';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Link from 'next/link'
 
@@ -55,6 +55,13 @@ export default function FetchScheduleList() {
     setMenuIndex(null);
   };
 
+  const handleDelete = async (scheduleId: string) => {
+    const updatedMessages = scheduleMessage.filter((message) => message.id !== scheduleId);
+    setScheduleMessage(updatedMessages);
+    handleMenuClose();
+    await handleScheduleDelete(scheduleId);
+  }
+
   // https://stackoverflow.com/a/13899011
   // TODO: Add type checking here
   function tConvert (time: any) {
@@ -97,12 +104,11 @@ export default function FetchScheduleList() {
               <Menu
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl) && menuIndex === index}
-                onClose={handleMenuClose}
-              >
+                onClose={handleMenuClose}>
                 <Link href={`/schedule/add?scheduleId=${message.id}`} passHref>
                   <MenuItem component="a" onClick={handleMenuClose}>Edit</MenuItem>
                 </Link>
-               
+                <MenuItem onClick={() => handleDelete(message.id)}>Delete</MenuItem>
               </Menu>
               <Typography color="text.secondary">
                 {message.schedule_frequency} @ {tConvert(message.scheduled_time)}

@@ -50,7 +50,7 @@ export async function scheduleMessage(prevState: { message: string; }, formData:
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    "scheduleId": responseData.id
+                    "requestId": responseData.id
                 })
             })
         }
