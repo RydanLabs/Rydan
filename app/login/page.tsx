@@ -4,6 +4,7 @@ import { login } from './actions'
 import React from 'react';
 import { useFormState } from 'react-dom'
 import { useFormStatus } from "react-dom";
+import OneTapComponent from '@/components/google/OneTapComponent';
 
 const initialState = {
   message: "",
@@ -15,15 +16,9 @@ export default function Login() {
   const [state, formAction] = useFormState(login, initialState);
   const { pending } = useFormStatus()
 
-  const handleSignInWithGoogle = (response: any) => {
-    // Handle the response from Google here
-    console.log("Google Sign-In response:", response);
-  };
-
     return(
       <>
       <div className="bg-white flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-          
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
             Sign in to your account
@@ -85,9 +80,7 @@ export default function Login() {
                 Sign in
               </button>
               <br />
-              {/* TODO: Handle sign in with google here
-                            <SignInWithGoogle onSignIn={handleSignInWithGoogle}></SignInWithGoogle>
-              */}
+              <OneTapComponent />
             </div>
           </form>
           <p className="mt-10 text-center text-sm text-gray-500">
