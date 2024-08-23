@@ -8,8 +8,10 @@ import ListItem from '@mui/material/ListItem';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import { Box, Switch } from '@mui/material';
+import { Box, Switch, IconButton, MenuItem, Menu } from '@mui/material';
 import { handleScheduleChange } from './actions';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import Link from 'next/link'
 
 
 export default function FetchScheduleList() {
@@ -39,6 +41,21 @@ export default function FetchScheduleList() {
     })
   }, []);
   
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [menuIndex, setMenuIndex] = useState(null);
+
+  const handleMenuClick = (event: any, index: any) => {
+    setAnchorEl(event.currentTarget);
+    setMenuIndex(index);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    setMenuIndex(null);
+  };
+
+
   const handleSwitchChange = (scheduleIndex: string, listIndex: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
     const isEnabled = event.target.checked
     setSwitchStates({
@@ -49,29 +66,43 @@ export default function FetchScheduleList() {
   };
 
   return (
-    <div>
-      <List sx={{ width: '100%' }}>
-        {scheduleMessage.map((message, index) => (
+    <List sx={{ width: '100%' }}>
+      {scheduleMessage.map((message, index) => (
         <ListItem key={index} sx={{ width: '100%', mb: 2, p: 0, display: 'flex', justifyContent: 'flex-start' }}>
           <Card sx={{ width: '100%' }}>
-              <CardContent>
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <Typography gutterBottom variant="h5" component="div">
-                    {message.phone_number}
-                  </Typography>
-                  <Switch edge="end"
-                          checked={switchStates[index] || false}
-                          onChange={handleSwitchChange(message.id, index)}                  
-                  />
-                </Box>
+            <CardContent>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <Typography gutterBottom variant="h5" component="div">
+                  {message.phone_number}
+                </Typography>
+                <IconButton onClick={(event) => handleMenuClick(event, index)}>
+                  <MoreVertIcon />
+                </IconButton>
+              </Box>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl) && menuIndex === index}
+                onClose={handleMenuClose}
+              >
+                <Link href={`/schedule/add?scheduleId=${message.id}`} passHref>
+                  <MenuItem component="a" onClick={handleMenuClose}>Edit</MenuItem>
+                </Link>
+               
+              </Menu>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 1 }}>
                 <Typography variant="body2" color="text.secondary">
                   {message.message_to_send}
                 </Typography>
-              </CardContent>
-            </Card>
-          </ListItem>
-        ))}
-      </List>
-    </div>
-    );
+                <Switch
+                  edge="end"
+                  checked={switchStates[index] || false}
+                  onChange={handleSwitchChange(message.id, index)}
+                />
+              </Box>
+            </CardContent>
+          </Card>
+        </ListItem>
+      ))}
+    </List>
+  );
 }

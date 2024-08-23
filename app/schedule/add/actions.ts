@@ -13,7 +13,7 @@ export async function scheduleMessage(prevState: { message: string; }, formData:
     const messageToSend = formData.get("messageToSend") as string
     const scheduleTime = formData.get("time") as string
     const timeZone = formData.get("timeZone") as string
-
+    const scheduleId = formData.get("scheduleId") as string
     if (!messageToSend) {
         return { message: "Please enter a message to send" }
     }
@@ -29,11 +29,14 @@ export async function scheduleMessage(prevState: { message: string; }, formData:
 
     const supabaseClient = createSupabaseClient()
     const { data } = await supabaseClient.auth.getUser()
-    const insertResponse = await supabaseClient.from("scheduled_messages").insert({
+    const insertResponse = await supabaseClient.from("scheduled_messages").upsert({
+        id: scheduleId,
         comms_type: communicationPlatform,
         message_to_send: messageToSend,
         phone_number: phoneNumber,
-        user_id: data.user?.id
+        user_id: data.user?.id,
+        scheduled_time: scheduleTime,
+        schedule_frequency: 'DAILY'
     }).select().single()
 
     const responseData = insertResponse.data

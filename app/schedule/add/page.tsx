@@ -7,6 +7,9 @@ import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
 import { parsePhoneNumber } from 'react-phone-number-input'
 import type { E164Number } from 'libphonenumber-js'
+import { useSearchParams } from 'next/navigation'
+import { createClient } from "@/utils/supabase/client";
+import { useRouter } from "next/navigation";
 
 const initialState = {
   message: "",
@@ -19,16 +22,35 @@ export default function Schedule() {
     const [time, setTime] = useState('')
     const [commType, setCommType] = useState('SMS');
     const [telInput, setTelInput] = useState('')
+    const [scheduleId, setScheduleId] = useState('')
     const [state, formAction] = useFormState(scheduleMessage, initialState);
     const [phoneNumberError, setPhoneNumberError] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
-    
+    const searchParams = useSearchParams()
+    const supabase = createClient();
+    const router = useRouter();
+
     useEffect(() => {
       if (state?.message) {
         setIsLoading(false);
       }
-    }, [state?.message]);    
+      const scheduleId = searchParams.get("scheduleId")
+      if(scheduleId){
+        supabase.from('scheduled_messages').select().eq('id', scheduleId).maybeSingle().then(response => {
+          const data = response.data
+          if(data){
+            setCommType(data.comms_type || 'SMS')
+            setTelInput(data.phone_number)
+            setMesssage(data.message_to_send)
+            setScheduleId(data.id)
+            setTime(data.scheduled_time ?? '')
+          } else {
+            router.push('/schedule/add')
+          }
+        })
+      }
+    }, [state?.message]);
 
     function onRadioButtonChange(event: React.ChangeEvent<HTMLFieldSetElement>){
       const target = event.target as unknown as HTMLInputElement;
@@ -71,7 +93,7 @@ export default function Schedule() {
             </fieldset>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+              <label className="block text-sm font-medium leading-6 text-gray-900">
                   Phone number
               </label>
               <div className="mt-2">
@@ -90,6 +112,8 @@ export default function Schedule() {
                 <input id="timeZone" name="timeZone" value={timeZone} style={{display: "none"}}>
                 </input>
 
+                <input id="scheduleId" name="scheduleId" value={scheduleId} style={{display: "none"}}>
+                </input>
               </div>
             </div>
             <div>
@@ -112,7 +136,7 @@ export default function Schedule() {
 
               <div>
                 <div className="flex items-center justify-between">
-                  <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+                  <label className="block text-sm font-medium leading-6 text-gray-900">
                     Message to send
                   </label>
                 </div>

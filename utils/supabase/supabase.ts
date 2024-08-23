@@ -67,6 +67,8 @@ export type Database = {
           is_enabled: boolean | null
           message_to_send: string
           phone_number: string
+          schedule_frequency: Database["public"]["Enums"]["SCHEDULE_FREQUENCY"]
+          scheduled_time: string | null
           user_id: string | null
         }
         Insert: {
@@ -75,6 +77,8 @@ export type Database = {
           is_enabled?: boolean | null
           message_to_send: string
           phone_number: string
+          schedule_frequency?: Database["public"]["Enums"]["SCHEDULE_FREQUENCY"]
+          scheduled_time?: string | null
           user_id?: string | null
         }
         Update: {
@@ -83,6 +87,8 @@ export type Database = {
           is_enabled?: boolean | null
           message_to_send?: string
           phone_number?: string
+          schedule_frequency?: Database["public"]["Enums"]["SCHEDULE_FREQUENCY"]
+          scheduled_time?: string | null
           user_id?: string | null
         }
         Relationships: [
@@ -134,6 +140,7 @@ export type Database = {
     }
     Enums: {
       comms_platform: "PHONE_CALLS" | "SMS"
+      SCHEDULE_FREQUENCY: "DAILY" | "WEEKLY" | "MONTHLY"
     }
     CompositeTypes: {
       [_ in never]: never
