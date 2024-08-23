@@ -35,7 +35,7 @@ export default function Dashboard() {
   }
   
   function getTotalScheduledReminder(){
-    supabase.from('scheduled_messages').select('*', { count: 'exact', head: true }).then((scheduled) => {
+    supabase.from('scheduled_messages').select('*', { count: 'exact', head: true }).eq('is_enabled', 'true').then((scheduled) => {
       setScheduledMessageCount(scheduled.count ?? 0)
     })
   }
