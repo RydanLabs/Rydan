@@ -43,6 +43,17 @@ export async function scheduleMessage(prevState: { message: string; }, formData:
     if (responseData) {
         const time = scheduleTime.split(":")
         const cronBaseUrl = process.env.CRON_SERVICE_URL
+        if(scheduleId){
+            await fetch(`${cronBaseUrl}/api/v1/schedule`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    "scheduleId": responseData.id
+                })
+            })
+        }
         const scheduleMessageResponse = await fetch(`${cronBaseUrl}/api/v1/schedule`, {
             method: "POST",
             headers: {
